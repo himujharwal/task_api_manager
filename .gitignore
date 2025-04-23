@@ -175,3 +175,4 @@ cython_debug/
 
 tasks.db
 data.db
+config.py

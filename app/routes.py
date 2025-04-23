@@ -43,19 +43,23 @@ def create_tasks():
     # important note do not send the username into the raw body data you just send the authorisation token in header and tasks data in body
     # becuase the token has already the username when you set it into jwt_requried like reqest.user = decoded
     data = request.get_json()
-    username = request.user
-
-    user_instance = User.query.filter_by(name=username).first()
-    if user_instance:
-        return jsonify({'message': "user already exist."})
-    user_instance = User(username=username)
+    # print(data)
+    user = request.user  # fuck this give the dictories object of user not single user string
     
+    username = user['username']
+  
 
-    tasks_data = data.get['tasks', []]
+    user_instance = User.query.filter_by(username=username).first()
+    if not user_instance:
+        return jsonify({'message': "User not registered. Please register first."}), 401
+    # print("user_id =======", user_instance.id)
+    
+    tasks_data = data.get('tasks', [])
     add_tasks=[]
 
     for task in tasks_data:
-        new_task =Task(title=task.get["title", "no title found"], status=task.get["status", "pending"])
+        new_task =Task(title=task.get("title", "no title found"), status=task.get("status", "pending"))
+        new_task.user = user_instance   # becuase of relationship of orm i defined right 
         add_tasks.append(new_task)
 
 
@@ -83,7 +87,7 @@ def get_tasks():
 
     user = request.user 
 
-    if user['role'] != 'admin':
+    if user['user_type'] != 'admin':
         return {"message": "Unauthorized: Admin access required."}, 403
     
     users = User.query.all()
