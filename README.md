@@ -18,28 +18,33 @@ A simple REST API to handle **user registration, login, and task management** wi
 1. Clone the repository.
 2. activate virtual enviroment for better experiace
 2. Install dependencies:
-  pip install -r requirement.txt
+```
+  pip install -r requirement.txt```
 3. setup config file where you just write like 
+
 ```
 import os
 
 class Config:
     SECRET_KEY = "just write any digit or alphabet to generte it"
     SQLALCHEMY_DATABASE_URI = "sqlite:///data.db"
-    SQLALCHEMY_TRACK_MODIFICATIONS = False.```
+    SQLALCHEMY_TRACK_MODIFICATIONS = False.
+    ```
 
 4. Run the app:
-```
+
+    ```
    python run.py in terminal
    ```
 
-
+---
 
 ## Endpoints samples
 
 ### 1. User Registration
 - `POST /register`
 - Request body:
+
   ```json
   {
     "username": "your_username",
